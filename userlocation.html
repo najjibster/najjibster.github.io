@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Geolocation Example</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <script>
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                alert("Geolocation is not supported by this browser");
+            }
+            }
+
+        function showPosition(position){
+            let lat = position.coords.latitude;
+            let long = position.coords.longitude;
+
+            // const latitude = document.getElementById("lat");
+            // latitude.innerHTML = `Latitude: ${lat} <br>`;
+
+            // const longitude = document.getElementById("long");
+            // longitude.innerHTML = `Longitude: ${long}`;
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = long;
+
+            // Initialize MapTiler map
+            maptilersdk.config.apiKey = 'SD7hQ8MxttDH8J7a5kYN';
+
+            const map = new maptilersdk.Map({
+                container: 'map', // container's id or the HTML element to render the map
+                style: maptilersdk.MapStyle.SATELLITE, // style URL
+                geolocate: maptilersdk.GeolocationType.POINT,
+                center: [long, lat], // initial map center in [lon, lat]
+                zoom: 16 // initial map zoom
+            });
+
+            map.on('click', async (e) => {
+            const {lng, lat} = e.lngLat;
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
+            reverseGeocoding(lng, lat);
+            });
+
+            map.on('load', function() {
+            const {lng, lat} = map.getCenter();
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
+            reverseGeocoding(lng, lat);
+            });
+
+            // Add a marker to the map
+            const marker = new maptilersdk.Marker()
+               .setLngLat([long, lat])
+               .addTo(map);
+            console.log(lat, long);
+
+            async function reverseGeocoding(lng, lat){
+                    if (marker) {
+                    marker.setLngLat([lng, lat]);
+                    } else {
+                    const marker = new maptilersdk.Marker()
+                    .setLngLat([lng, lat])
+                    .addTo(map);
+                    }
+                    map.flyTo({
+                    center: [
+                        lng,
+                        lat
+                    ],
+                    essential: true // this animation is considered essential with respect to prefers-reduced-motion
+                    });
+                }
+
+        };
+
+        function showError(error){
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+                default:
+                    alert("An unknown error occurred.");
+            }
+        };
+
+    </script>
+    <!-- <script src="https://cdn.maptiler.com/maptiler-leaflet/1.7.0/maptiler-leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.maptiler.com/maptiler-leaflet/1.7.0/maptiler-leaflet.css"/> -->
+    <!-- <link href="https://docs.maptiler.com/styles/base.css" rel="stylesheet"> -->
+
+    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.js"></script>
+    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>Geolocation Example</h1>
+    <button onclick="getLocation()">Get Location</button>
+    <!-- <p id="lat"></p>
+    <p id="long"></p> -->
+    <div class="coordinates">
+        <div class="mb-1">
+          <input type="text" class="form-control" id="lat" name="lat" placeholder="Latitude" aria-label="Latitude" disabled>
+        </div>
+        <div class="mb-1">
+          <input type="text" class="form-control" id="lng" name="lng" placeholder="Longitude" aria-label="Longitude" disabled>
+        </div>
+      </div>
+    <div id="map" style="height: 200px;"></div>
+</body>
+</html>
