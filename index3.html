@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geocoding</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <!-- <link href="https://docs.maptiler.com/styles/base.css" rel="stylesheet">
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.umd.min.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v1.2.0/maptiler-sdk.css" rel="stylesheet" /> -->
+  <style>
+    body { margin: 0; padding: 0; }
+    #map { position: absolute; width: 100%; height: 50%; }
+    .coordinates{
+      position: relative;
+      top: 5px;
+      left: 5px;
+      z-index: 1000;
+      width: fit-content;
+    }
+  </style>
+</head>
+<body>
+  <form action="#" method="post">
+    <div class="coordinates">
+      <button id="btn-getlocation">Get Location</button>
+      <div class="mb-1">
+        <input type="text" class="form-control" id="search" name="search" placeholder="Search" aria-label="Search">
+      </div>
+      <div class="mb-1">
+        <input type="text" class="form-control" id="lat" name="lat" placeholder="Latitude" aria-label="Latitude">
+      </div>
+      <div class="mb-1">
+        <input type="text" class="form-control" id="lng" name="lng" placeholder="Longitude" aria-label="Longitude">
+      </div>
+      <div>
+        <button type="submit" id="btn-search" class="btn btn-primary">Search</button>
+      </div>
+    </div>
+  </form>
+  <div id="map"></div>
+  
+  <!-- <pre id="results"></pre> -->
+  <!-- <pre id="results"></pre> -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([4.9035, 114.9398], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    let marker;
+
+    document.getElementById('btn-getlocation').addEventListener('click', function(e) {
+  e.preventDefault();
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      document.getElementById('lat').value = lat;
+      document.getElementById('lng').value = lng;
+      reverseGeocoding(lng, lat);
+    });
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+});
+
+    map.on('click', function(e) {
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
+      document.getElementById('lat').value = lat;
+      document.getElementById('lng').value = lng;
+      reverseGeocoding(lng, lat);
+    });
+
+    document.getElementById('btn-search').addEventListener('click', function(e) {
+      e.preventDefault();
+      const search = document.getElementById('search').value;
+      geocoding(search);
+    });
+
+    async function geocoding(search){
+  if (!search || search === "") {
+    document.getElementById('results').innerHTML = "";
+  } 
+  else {
+    const countryCode = 'bn'; // Change this to the country code you want to limit the search to
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&countrycodes=${countryCode}&q=${search}`);
+    const data = await response.json();
+    if(data.length > 0) {
+      const lat = data[0].lat;
+      const lng = data[0].lon;
+      document.getElementById('lat').value = lat;
+      document.getElementById('lng').value = lng;
+      reverseGeocoding(lng, lat);
+    } else {
+      alert('The place you searched for is not in the specified country. Please try again.');
+    }
+  }
+}
+
+async function reverseGeocoding(lng, lat){
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`);
+    const data = await response.json();
+    const countryCode = 'bn'; // Change this to the country code you want to limit the search to
+    if (data.address && data.address.country_code === countryCode) {
+      const jsonString = JSON.stringify(data, null, 2);
+      let locationData = JSON.parse(jsonString);
+      console.log(locationData.display_name);
+      // document.getElementById('search').value = locationData.display_name;
+
+      if (marker) {
+        marker.setLatLng([lat, lng]);
+      } else {
+        marker = L.marker([lat, lng]).addTo(map);
+      }
+      map.flyTo([lat, lng], 16);
+    } else {
+      alert('The location you pinpointed is not in the specified country. Please try again.');
+    }
+}
+  </script>
+</body>
+</html>
