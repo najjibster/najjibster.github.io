@@ -12,6 +12,24 @@
 </head>
 <body>
   <h2>ATEEZ - 'Adrenaline' Official MV</h2>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/vqkfEUqjl6Y?si=RPWFkWkyvkQ5IeXE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe id="ytplayer" width="560" height="315" src="https://www.youtube.com/embed/vqkfEUqjl6Y?si=RPWFkWkyvkQ5IeXE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 </body>
+    <script>
+  var player;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('ytplayer', {
+      events: {
+        'onReady': onPlayerReady
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+    // Force lowest resolution available
+    event.target.setPlaybackQuality('small'); 
+    event.target.playVideo();
+  }
+</script>
+
 </html>
+
