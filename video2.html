@@ -21,27 +21,19 @@
     const container = document.getElementById("video-container");
 
     // Loop 100 times
-for (let i = 0; i < 50; i++) {
-  const iframe = document.createElement("iframe");
-  iframe.width = "560";
-  iframe.height = "315";
-  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}`;
-  iframe.title = "YouTube video player";
-  iframe.frameBorder = "0";
-  iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-  iframe.allowFullscreen = true;
+    for (let i = 0; i < 50; i++) {
+      const iframe = document.createElement("iframe");
+      iframe.width = "560";
+      iframe.height = "315";
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}`;
+      iframe.title = "YouTube video player";
+      iframe.frameBorder = "0";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
 
-  container.appendChild(iframe);
-
-  // When we reach the last iteration, refresh the page
-  if (i === 49) {
-    // Delay a bit so the last iframe is visible before reload
-setTimeout(() => {
-  location.reload();
-}, 10000); // refresh after 10 seconds
-  }
-}
-
+      container.appendChild(iframe);
+    }
+    
       function onPlayerReady(event) {
     // Force lowest resolution available
     event.target.setPlaybackQuality('small'); 
