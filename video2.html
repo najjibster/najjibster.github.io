@@ -12,7 +12,29 @@
 </head>
 <body>
   <h2>Big Ocean 빅오션 'One Man Army' Official MV</h2>
-<iframe id="ytplayer" width="560" height="315" 
+    <div id="video-container"></div>
+      <script>
+    // The video ID you want to embed
+    const videoId = "HM7UMkgHPC4";
+
+    // Get the container
+    const container = document.getElementById("video-container");
+
+    // Loop 100 times
+    for (let i = 0; i < 100; i++) {
+      const iframe = document.createElement("iframe");
+      iframe.width = "560";
+      iframe.height = "315";
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=0&mute=1&loop=1&playlist=${videoId}`;
+      iframe.title = "YouTube video player";
+      iframe.frameBorder = "0";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+      iframe.allowFullscreen = true;
+
+      container.appendChild(iframe);
+    }
+  </script>
+<!-- <iframe id="ytplayer" width="560" height="315" 
     src="https://www.youtube.com/embed/HM7UMkgHPC4?autoplay=1&mute=1&loop=1" 
     
     title="YouTube video player" 
@@ -101,10 +123,10 @@
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
     referrerpolicy="strict-origin-when-cross-origin" 
     allowfullscreen>
-</iframe>
+</iframe> -->
 
 </body>
-<script>
+<!-- <script>
   var player;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('ytplayer', {
@@ -123,7 +145,7 @@
     event.target.setPlaybackQuality('small'); 
     event.target.playVideo();
   }
-</script>
+</script> -->
 
 
 </html>
