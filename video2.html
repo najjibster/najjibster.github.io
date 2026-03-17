@@ -12,36 +12,42 @@
 </head>
 <body>
   <h2>Big Ocean 빅오션 'One Man Army' Official MV</h2>
-    <!-- <div id="video-container"></div>
-      <script>
-    // The video ID you want to embed
-    const videoId = "HM7UMkgHPC4";
 
-    // Get the container
-    const container = document.getElementById("video-container");
+<div id="video-container"></div>
 
-    // Loop 100 times
-    for (let i = 0; i < 50; i++) {
-      const iframe = document.createElement("iframe");
-      iframe.width = "560";
-      iframe.height = "315";
-      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=0&loop=1`;
-      iframe.title = "YouTube video player";
-      iframe.frameBorder = "0";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-      iframe.allowFullscreen = true;
+<script>
+  const videoId = "HM7UMkgHPC4";
+  const container = document.getElementById("video-container");
+  const totalVideos = 50;
+  const delay = 2000; // 2 seconds
 
-      container.appendChild(iframe);
-    }
+  let count = 0;
 
-      function onPlayerReady(event) {
-    event.target.setPlaybackQuality('small'); 
-    event.target.playVideo();
+  function addVideo() {
+    if (count >= totalVideos) return;
+
+    const iframe = document.createElement("iframe");
+    iframe.width = "560";
+    iframe.height = "315";
+    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1`;
+    iframe.title = "YouTube video player";
+    iframe.frameBorder = "0";
+    iframe.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+
+    container.appendChild(iframe);
+
+    count++;
+    setTimeout(addVideo, delay); // schedule next video after 2s
   }
-  </script> -->
+
+  // Start after 2 seconds
+  setTimeout(addVideo, delay);
+</script>
 
  
-<iframe id="ytplayer" width="560" height="315" 
+<!-- <iframe id="ytplayer" width="560" height="315" 
     src="https://www.youtube.com/embed/HM7UMkgHPC4?autoplay=1&mute=1&loop=1" 
     
     title="YouTube video player" 
@@ -494,17 +500,16 @@
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
     referrerpolicy="strict-origin-when-cross-origin" 
     allowfullscreen>
-</iframe> 
-
+</iframe>  -->
 
 </body>
-<script>
+<!-- <script>
   var player;
   function onYouTubeIframeAPIReady() {
     player = new YT.Player('ytplayer', {
       playerVars: {
-        autoplay: 1,   // Enables autoplay
-        mute: 1        // Muting helps bypass autoplay restrictions
+        autoplay: 1,  
+        mute: 1       
       },
       events: {
         'onReady': onPlayerReady
@@ -516,7 +521,7 @@
     event.target.setPlaybackQuality('small'); 
     event.target.playVideo();
   }
-</script>
+</script> -->
 </html>
 
 
