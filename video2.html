@@ -15,36 +15,53 @@
 
 <div id="video-container"></div>
 
+<script src="https://www.youtube.com/iframe_api"></script>
 <script>
   const videoId = "HM7UMkgHPC4";
   const container = document.getElementById("video-container");
   const totalVideos = 50;
   const delay = 2000; // 2 seconds
-
   let count = 0;
 
   function addVideo() {
     if (count >= totalVideos) return;
 
-    const iframe = document.createElement("iframe");
-    iframe.width = "560";
-    iframe.height = "315";
-    iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1`;
-    iframe.title = "YouTube video player";
-    iframe.frameBorder = "0";
-    iframe.allow =
-      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
-    iframe.allowFullscreen = true;
+    const div = document.createElement("div");
+    div.id = `player-${count}`;
+    container.appendChild(div);
 
-    container.appendChild(iframe);
+    const player = new YT.Player(div.id, {
+      height: "315",
+      width: "560",
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        loop: 1,
+      },
+      events: {
+        onReady: (event) => {
+          // Force lowest resolution
+          event.target.setPlaybackQuality("small");
+
+          // Pause after 5 seconds
+          setTimeout(() => {
+            event.target.pauseVideo();
+          }, 5000);
+        },
+      },
+    });
 
     count++;
     setTimeout(addVideo, delay); // schedule next video after 2s
   }
 
-  // Start after 2 seconds
-  setTimeout(addVideo, delay);
+  // YouTube API requires this global function
+  function onYouTubeIframeAPIReady() {
+    setTimeout(addVideo, delay);
+  }
 </script>
+
 
  
 <!-- <iframe id="ytplayer" width="560" height="315" 
