@@ -6,6 +6,13 @@
 <body>
   <h2>P1HARMONY UNIQUE MV</h2>
 
+  <style>
+    #video-container iframe {
+  display: none;
+}
+
+  </style>
+
   <div id="video-container"></div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -13,7 +20,7 @@
   const videoId = "m18dRRu9-V4";
   const container = document.getElementById("video-container");
   const totalVideos = 50;
-  const delay = 1000; // 1 seconds
+  const delay = 2000; // 1 seconds
   let count = 0;
 
   function addVideo() {
