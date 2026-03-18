@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>P1HARMONY UNIQUE</title>
+</head>
+<body>
+  <h2>P1HARMONY UNIQUE MV</h2>
+
+  <div id="video-container"></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+  const videoId = "mt6gODAEpxY";
+  const container = document.getElementById("video-container");
+  const totalVideos = 500;
+  const delay = 2000; // 2 seconds
+  let count = 0;
+
+  function addVideo() {
+    if (count >= totalVideos) return;
+
+    const div = document.createElement("div");
+    div.id = `player-${count}`;
+    container.appendChild(div);
+
+    const player = new YT.Player(div.id, {
+      height: "315",
+      width: "560",
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        loop: 1,
+      },
+      events: {
+        onReady: (event) => {
+          // Force lowest resolution
+          event.target.setPlaybackQuality("small");
+
+          // Pause after 5 seconds
+          setTimeout(() => {
+            event.target.pauseVideo();
+          }, 5000);
+        },
+      },
+    });
+
+    count++;
+    setTimeout(addVideo, delay); // schedule next video after 2s
+  }
+
+  // YouTube API requires this global function
+  function onYouTubeIframeAPIReady() {
+    setTimeout(addVideo, delay);
+  }
+</script>
+
+<!-- <iframe id="ytplayer" width="560" height="315" 
+    src="https://www.youtube.com/embed/m18dRRu9-V4?autoplay=1&mute=1&loop=1" 
+    
+    title="YouTube video player" 
+    frameborder="0" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    referrerpolicy="strict-origin-when-cross-origin" 
+    allowfullscreen>
+</iframe> -->
+
+
+</body>
+</html>
