@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Mass Streamer</title>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #controls { margin-bottom: 20px; }
+        input, button { margin: 5px; padding: 10px; font-size: 16px; }
+        #video-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; max-width: 1400px; }
+        .player-wrapper { aspect-ratio: 16/9; }
+    </style>
+</head>
+<body>
+    <h1>YouTube Mass Video Streamer</h1>
+    <div id="controls">
+        <input type="text" id="videoId" placeholder="YouTube Video ID or Playlist ID" value="dQw4w9WgXcQ">
+        <input type="number" id="numPlayers" placeholder="Number of players" value="50" min="1" max="500">
+        <input type="number" id="staggerDelay" placeholder="Stagger delay (ms)" value="200" min="0">
+        <button onclick="startStreaming()">Start Mass Stream</button>
+        <button onclick="stopAll()">Stop All</button>
+    </div>
+    <div id="video-container"></div>
+
+    <script>
+        let players = [];
+        let apiReady = false;
+
+        function onYouTubeIframeAPIReady() {
+            apiReady = true;
+            console.log('YouTube API ready');
+        }
+
+        function startStreaming() {
+            const videoId = document.getElementById('videoId').value.trim();
+            const numPlayers = parseInt(document.getElementById('numPlayers').value) || 50;
+            const delay = parseInt(document.getElementById('staggerDelay').value) || 200;
+
+            if (!videoId) {
+                alert('Enter a YouTube Video ID or Playlist ID');
+                return;
+            }
+
+            stopAll(); // Clear previous
+            const container = document.getElementById('video-container');
+            container.innerHTML = '';
+
+            for (let i = 0; i < numPlayers; i++) {
+                setTimeout(() => createPlayer(videoId, container, i), i * delay);
+            }
+        }
+
+        function createPlayer(videoId, container, index) {
+            if (!apiReady) {
+                console.warn('API not ready yet');
+                return;
+            }
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'player-wrapper';
+            const playerDiv = document.createElement('div');
+            playerDiv.id = `player-${index}`;
+            wrapper.appendChild(playerDiv);
+            container.appendChild(wrapper);
+
+            const player = new YT.Player(playerDiv.id, {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                playerVars: {
+                    autoplay: 1,
+                    mute: 1,
+                    loop: 1,
+                    playlist: videoId, // Enables loop
+                    playsinline: 1,
+                    modestbranding: 1,
+                    rel: 0
+                },
+                events: {
+                    onReady: (event) => {
+                        event.target.setPlaybackQuality('small'); // Low quality for perf
+                        console.log(`Player ${index} ready`);
+                    },
+                    onError: (event) => console.error(`Player ${index} error:`, event.data)
+                }
+            });
+            players.push(player);
+        }
+
+        function stopAll() {
+            players.forEach(player => {
+                if (player && player.stopVideo) player.stopVideo();
+            });
+            players = [];
+            document.getElementById('video-container').innerHTML = '';
+        }
+
+        // Graceful cleanup
+        window.addEventListener('beforeunload', stopAll);
+    </script>
+</body>
+</html>
