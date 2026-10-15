@@ -1,102 +1,54 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <a
-      href="https://www.tiktok.com/@9zzibody/live?_r=1&enter_from_merge=pc_share&enter_method=pc_share&is_from_webapp=1&sender_device=pc"
-      target="_blank"
-      rel="noopener noreferrer"
-      style="
-        display: block;
-        text-decoration: none;
-        color: inherit;
-        width: 100%;
-        max-width: 460px;
-        background: #ffffff;
-        border-radius: 4px;
-        overflow: hidden;
-        border: 1px solid #dedede;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-        font-family:
-          -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto,
-          Helvetica, Arial, sans-serif;
-      "
-      ><div
-        style="
-          width: 100%;
-          aspect-ratio: 16 / 9;
-          background: rgba(0, 0, 0, 0.05);
-          overflow: hidden;
-        "
-      ></div>
-      <div
-        style="
-          padding: 14px 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-        "
-      >
-        <div
-          style="
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            min-height: 15px;
-          "
-        >
-          <img
-            src="https://www.tiktok.com/favicon.ico"
-            alt=""
-            style="
-              width: 15px;
-              height: 15px;
-              border-radius: 4px;
-              flex-shrink: 0;
-            "
-          /><span
-            style="
-              font-size: 11px;
-              font-weight: 400;
-              color: #999999;
-              letter-spacing: 0.5px;
-              text-transform: uppercase;
-            "
-            >TikTok</span
-          >
-        </div>
-        <div
-          style="
-            font-size: 16px;
-            font-weight: 400;
-            color: #000000;
-            line-height: 1.4;
-            margin: 0;
-          "
-        >
-          live
-        </div>
-        <div
-          style="
-            font-size: 13px;
-            color: #000000;
-            line-height: 1.4;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin: 0;
-          "
-        >
-          Page not available
-        </div>
-      </div></a
-    >
-  </body>
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Create three equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<h2>Responsive Three Column Layout</h2>
+<p>Resize the browser window to see the responsive effect (the columns will stack on top of each other instead of floating next to each other, when the screen is less than 600px wide).</p>
+
+<div class="row">
+  <div class="column" style="background-color:#aaa;">
+    <h2>Column 1</h2>
+    <iframe src="https://www.tiktok.com/@9zzibody/live?_r=1&enter_from_merge=pc_share&enter_method=pc_share&is_from_webapp=1&sender_device=pc" title="W3Schools Free Online Web Tutorials"></iframe>
+  </div>
+  <div class="column" style="background-color:#bbb;">
+    <h2>Column 2</h2>
+    <p>Some text..</p>
+  </div>
+  <div class="column" style="background-color:#ccc;">
+    <h2>Column 3</h2>
+    <p>Some text..</p>
+  </div>
+</div>
+
+</body>
 </html>
